@@ -1,0 +1,106 @@
+{% extends layout %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="dashboardbox">
+    <div class="card bg-secondary p-5" style="margin-top: 3rem; margin-bottom: 3rem; background-image: url(../static/images/1710299.svg);">
+        <h2 style="font-size: 5rem; text-shadow: 1px 1px 1px black; color: bisque;">Welcome to the dashboard.</h2>
+        <p style="font-size: 4rem; text-shadow: 1px 1px 1px black; color: rgb(179, 171, 161);">Place where all the important information is within reach. </p>
+    </div>
+
+    <div class="chart-container" style="display: flex; gap: 3rem;">
+        <div class="chart">
+            <canvas id="ordersChart" width="400" height="300"></canvas>
+        </div>
+        <div class="chart">
+            <canvas id="revenueChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+
+    <div class="nutshell" style="display: flex; flex-direction: row; justify-content: space-between; gap: 3rem; margin-bottom: 5rem;">
+        <div class="card bg-secondary p-5" style="margin-top: 10rem;">
+            <div class="topsales">
+                <h2 style="font-size: 2.7rem; text-shadow: 1px 1px 1px black; color: rgb(17, 114, 38);">Greatest interest in...</h2>
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    {% for product, quantity in top_selling_products %}
+                        <li style="font-size: 2rem; text-shadow: 1px 1px 1px black; color: rgb(179, 171, 161);">- {{ product }} - {{ quantity }} pieces sold</li>
+                    {% endfor %} 
+                </ul>
+            </div>
+        </div>
+        <div class="card bg-secondary p-5" style="margin-top: 10rem;">
+            <div class="topsales">
+                <h2 style="font-size: 2.7rem; text-shadow: 1px 1px 1px black; color: rgb(105, 0, 0);">Least interest in...</h2>
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    {% for product, quantity in least_popular_products %}
+                        <li style="font-size: 2rem; text-shadow: 1px 1px 1px black; color: rgb(179, 171, 161);">- {{ product }} - {{ quantity }} orders</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ordersCtx = document.getElementById('ordersChart').getContext('2d');
+        var ordersChart = new Chart(ordersCtx, {
+            type: 'line',
+            data: {
+                labels: {{ labels_orders|tojson }},
+                datasets: [{
+                    label: 'Orders Count',
+                    data: {{ values_orders|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 10 
+                        }
+                    }]
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        });
+
+
+        var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: {{ revenue_labels|tojson }},
+                datasets: [{
+                    label: 'Revenue',
+                    data: {{ revenue_values|tojson }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 50
+                        }
+                    }]
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}

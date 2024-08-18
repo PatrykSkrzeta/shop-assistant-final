@@ -1,0 +1,7 @@
+Flask
+mongoengine
+Flask-Login
+Flask-WTF
+reportlab
+Flask-admin
+Flask-Mail

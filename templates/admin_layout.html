@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marketplace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+</head>
+<body>
+      <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="px-5 navbar-brand logo" href="{{ url_for('dashboard') }}">Marketplace <span style="color: orange; font-size: 2rem; text-shadow: 1px 1px 1px black;">ADMIN</span></a>
+            <div style="float: right;" class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active login" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active login" href="#" id="browseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Browse
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="browseDropdown">
+                            <li><a class="dropdown-item" style="font-size: 1.3rem;"  href="{{ url_for('magazine') }}">Magazine</a></li>
+                            <li><a class="dropdown-item" style="font-size: 1.3rem;"  href="{{ url_for('customers') }}">Customers data</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active login" href="#" id="createDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Create
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="createDropdown">
+                            <li><a class="dropdown-item" style="font-size: 1.3rem;"  href="{{ url_for('addorder') }}">Create order</a></li>
+                            <li><a class="dropdown-item" style="font-size: 1.3rem;"  href="{{ url_for('addproduct') }}">Add product</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active login" href="#" id="browseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="browseDropdown">
+                            <li><a class="dropdown-item" style="font-size: 1.3rem;"  href="{{ url_for('profile', nickname=current_user.nickname) }}">Profile</a></li>
+                            <li >
+                                <a class="dropdown-item" style="font-size: 1.3rem;" onclick="openConfirm()">Log out</a>
+                            </li> 
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+      {% block content %}{% endblock %}
+    
+      <div id="confirmLogout" class="card text-white bg-primary mb-3" style="height: 35vh; width: 30vw; display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
+        <div class="card-header" style="font-size: 1.4rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Confirm</span>
+            <button type="button" class="close" aria-label="Close" onclick="closeConfirm()" style="background: none; border: none; color: white; font-size: 1.6rem;">
+                &times;
+            </button>
+        </div>
+        <div class="card-body" style="padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <h4 class="card-title" style="font-size: 4.3rem;">Wait!</h4>
+                <p class="card-text" style="font-size: 3rem;">Do you want to be logged out?</p>
+            </div>
+            <div class="buttons" style="display: flex; flex-direction: row; justify-content: space-between; margin-top: auto;">
+                <a onclick="closeConfirm()" class="btn btn-success px-5" style="font-size: 2rem; ">No</a>
+                <a href="{{ url_for('logout') }}" style="font-size: 2rem; " class="btn btn-danger btn-sm px-5">Yes</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible alert-info fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', () => {
+                    button.parentElement.classList.remove('show');
+                    setTimeout(() => {
+                        button.parentElement.remove();
+                    }, 150);
+                });
+            });
+        });
+
+                function openConfirm() {
+            document.getElementById('confirmLogout').style.display = 'flex';
+        }
+    
+        function closeConfirm() {
+            document.getElementById('confirmLogout').style.display = 'none';
+        }
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

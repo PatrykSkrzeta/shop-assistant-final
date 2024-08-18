@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="px-5 navbar-brand logo" href="{{ url_for('index') }}">Marketplace</a>
+          <div style="float: right;"class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active login" href="{{ url_for('index') }}">Home</a>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="background">
+        <div class="verifybox">
+          <form class="bg-secondary card verifyform" method="POST" action="{{ url_for('verify') }}">
+            {{ form.hidden_tag() }}
+            <h2>Check your mail!</h2>
+            <p>We sent you a 6-digit code</p>
+            <fieldse style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div class="logincontainer">
+                        {{ form.code(id="code", class="form-control logininput px-5 py-4 my-4", placeholder="******") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary", style="   ;
+                    padding: 1rem;
+                    width: 10rem;
+                    font-size: 2rem;") }}
+                    <a style="font-size: 1.7rem;" class="my-4"  href="{{ url_for('login') }}">Back to Login</a>
+            </fieldset>
+            
+        </form>
+
+    </div>
+      </div>
+
+      <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissible alert-info fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>>
+
+    <script>
+                document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', () => {
+                    button.parentElement.classList.remove('show');
+                    setTimeout(() => {
+                        button.parentElement.remove();
+                    }, 150);
+                });
+            });
+        });
+        </script>
+    
+</body>
+</html>
+

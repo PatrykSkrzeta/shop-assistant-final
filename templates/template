@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="container mt-5">
+    <div class="card bg-dark text-white border-0">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <div class="avatar mr-3">
+                <!-- Możesz tutaj dodać obrazek użytkownika -->
+                <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px;">
+            </div>
+            <h3 class="mb-0">{{ user.nickname }}</h3>
+        </div>
+        <div class="card-body bg-secondary">
+            <h5 class="card-title">Profile Information</h5>
+            <p class="card-text"><strong>First Name:</strong> {{ user.first_name }}</p>
+            <p class="card-text"><strong>Last Name:</strong> {{ user.last_name }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="card-text"><strong>Country:</strong> {{ user.country }}</p>
+            <p class="card-text"><strong>Description:</strong> {{ user.user_description or "No description provided" }}</p>
+
+            <h5 class="mt-4">Positions</h5>
+            <ul class="list-group">
+                {% for position in user.positions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white border-light">
+                        <span class="badge bg-secondary">{{ position.name }}</span>
+                        <span class="ml-2" style="color: {{ position.color }}; font-weight: {{ position.fontweight }}; background-color: {{ position.backgroundcolor }}">{{ position.name }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

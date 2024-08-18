@@ -1,0 +1,113 @@
+{% extends layout %}
+{% block content %}
+<div class="details container">
+    <h2 class="detailsHeading">Customize Order</h2>
+    <form method="POST" action="{{ url_for('customize_order', order_id=order.id) }}">
+        <table class="detailstable table table-hover">
+            <tbody>
+                <tr>
+                    <th style="font-size: 2rem;">Order ID</th>
+                    <td style="font-size: 2rem; color: {{ order.dot }};">{{ order.id }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">First Name</th>
+                    <td style="font-size: 2rem;">{{ order.first_name }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Last Name</th>
+                    <td style="font-size: 2rem;">{{ order.last_name }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Note</th>
+                    <td style="font-size: 2rem;">{{ order.description }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Products</th>
+                    <td style="font-size: 2rem;">
+                        <ul style="list-style: none; display: flex; flex-direction: row; gap: 2rem; margin: 0; padding: 0;">
+                            {% for item in order.order_items %}
+                            <li style="font-size: 2rem;">
+                                {{ item.product_name }} <span style="font-size: 2rem; color: gray;">x</span>  {{ item.quantity }} = 
+                                <span style="color: rgb(84, 209, 84); font-size: 2rem;">{{ item.total_price }}$</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Total Quantity</th>
+                    <td style="font-size: 2rem;">{{ total_quantity }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Total Price</th>
+                    <td style="font-size: 2rem;">{{ order.total_order_price }} $</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Address</th>
+                    <td style="font-size: 2rem;">{{ order.address }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Pesel</th>
+                    <td style="font-size: 2rem;">{{ order.pesel }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Contact</th>
+                    <td style="font-size: 2rem;">{{ order.contact }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Date Added</th>
+                    <td style="font-size: 2rem;">{{ order.date_added }}</td>
+                </tr>
+                <tr>
+                    <th style="font-size: 2rem;">Color Dot</th>
+                    <td>
+                        <div class="color-picker">
+                            <button type="button" class="color-dot" style="background-color: #0066FF;" onclick="selectColor('#0066FF')"></button>
+                            <button type="button" class="color-dot" style="background-color: #00FF33;" onclick="selectColor('#00FF33')"></button>
+                            <button type="button" class="color-dot" style="background-color: #FF3333;" onclick="selectColor('#FF3333')"></button>
+                            <button type="button" class="color-dot" style="background-color: #9932CD;" onclick="selectColor('#9932CD')"></button>
+                            <button type="button" class="color-dot" style="background-color: #f6e54f;" onclick="selectColor('#f6e54f')"></button>
+                            <input type="hidden" id="dot" name="dot" value="{{ order.dot }}">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th style="font-size: 2rem;">Description</th>
+                    <td>
+                        <textarea class="form-control" id="description" name="description">{{ order.description }}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" style="font-size: 2rem;" class="btn btn-primary">Save Customization</button>
+    </form>
+</div>
+
+<script>
+function selectColor(color) {
+    document.getElementById('dot').value = color;
+    var colorDots = document.querySelectorAll('.color-dot');
+    colorDots.forEach(dot => dot.classList.remove('selected'));
+    document.querySelector(`button[style*="${color}"]`).classList.add('selected');
+}
+</script>
+
+<style>
+.color-picker {
+    display: flex;
+    gap: 10px;
+}
+.color-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    outline: none;
+}
+.color-dot.selected {
+    border-color: black; 
+}
+</style>
+{% endblock %}

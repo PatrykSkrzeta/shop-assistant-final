@@ -15,21 +15,11 @@ app.config['MAIL_USERNAME'] = 'domo241@wp.pl'
 app.config['MAIL_PASSWORD'] = 'Hny2tGMJmjerivj'
 mail = Mail(app)
 
-# Połączenie z MongoDB
 connect('shopasistant', host='localhost', port=27017, alias='default')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
-# Inicjalizacja GridFS w kontekście aplikacji
-def initialize_gridfs():
-    with app.app_context():
-        client = connect('shopasistant', host='localhost', port=27017, alias='default')
-        mongo_db = client['shopasistant']  # Pobranie obiektu bazy danych
-        app.fs = gridfs.GridFS(mongo_db)
-
-initialize_gridfs()
 
 from models import User
 from routes import *
